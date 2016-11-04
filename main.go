@@ -4,9 +4,28 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 
 	"bitbucket.org/kibernick/parrot/parrot"
 )
+
+type ParrotConfig struct {
+	ApiKey string
+}
+
+// readConfig will read config JSON from the given filepath.
+func readConfig(file string) (config ParrotConfig, err error) {
+	f, err := os.Open(file)
+	if err != nil {
+		return
+	}
+	defer f.Close()
+
+	if err = json.NewDecoder(f).Decode(&config); err != nil {
+		return
+	}
+	return
+}
 
 // postHandler accepts SMS messages submitted via a POST request containing a JSON object.
 func postHandler(w http.ResponseWriter, r *http.Request) {
@@ -40,6 +59,12 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	_, err := readConfig("config.json")
+	if err != nil {
+		fmt.Printf("Error reading config file: %s\n", err)
+		os.Exit(1)
+	}
+
 	http.HandleFunc("/", postHandler)
 
 	fmt.Println("Now serving on port 8000: parrot!")
