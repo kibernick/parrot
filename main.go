@@ -8,6 +8,7 @@ import (
 	"bitbucket.org/kibernick/parrot/parrot"
 )
 
+// postHandler accepts SMS messages submitted via a POST request containing a JSON object.
 func postHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		http.Error(w, "", http.StatusMethodNotAllowed)
@@ -24,7 +25,11 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	m := parrot.NewSMSMessage(reqData.Recipient, reqData.Originator, reqData.Message)
+	m := parrot.SMSMessage{
+		Recipient:  reqData.Recipient,
+		Originator: reqData.Originator,
+		Message:    parrot.SplitMessageIntoParts(reqData.Message),
+	}
 	res, err := m.Send()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
