@@ -9,7 +9,7 @@ type Config struct {
 	ApiKey string
 }
 
-// readConfig will read config JSON from the given filepath.
+// ReadConfig will read config JSON from the given filepath.
 func ReadConfig(file string) (config Config, err error) {
 	f, err := os.Open(file)
 	if err != nil {
@@ -22,3 +22,5 @@ func ReadConfig(file string) (config Config, err error) {
 	}
 	return
 }
+
+var readConfig = ReadConfig
