@@ -1,10 +1,10 @@
 package parrot
 
 import (
+	"encoding/hex"
 	"errors"
-	"testing"
-
 	"strings"
+	"testing"
 
 	"github.com/messagebird/go-rest-api"
 )
@@ -101,6 +101,8 @@ func TestParrot_prepareConcatenatedSMSs(t *testing.T) {
 	}{
 		{"", "", "", 0, true},
 		{"123", "123", "Yo", 1, false},
+		{"123", "123", strings.Repeat("1234567890", 15) + "123", 1, false},
+		{"123", "123", strings.Repeat("1234567890", 15) + "1234", 2, false},
 		{"123", "123", strings.Repeat("1234567890", 16) + "X", 2, false},
 	}
 	p := Parrot{}
@@ -119,6 +121,15 @@ func TestParrot_prepareConcatenatedSMSs(t *testing.T) {
 			if msg.UDHHeader == "" {
 				t.Fatal("UDH header was not set when preparing CSMS")
 			}
+			decoded, err := hex.DecodeString(msg.Message)
+			if err != nil {
+				t.Fatalf("binary message could not be decoded: %s", err)
+			}
+			if !strings.Contains(test.message, string(decoded)) {
+				t.Fatal("error comparing decoding binary message")
+			}
+
 		}
+
 	}
 }
