@@ -12,11 +12,11 @@ A simple API that accepts SMS messages submitted via a POST request. Uses the Me
 
 ## Usage
 
-Example JSON payload:
+Example JSON payload, using valid phone numbers, given as strings:
 ```json
 {
-    "recipient": "123", // a valid phone number
-    "originator": "123", // another valid phone number
+    "recipient": "123",
+    "originator": "123",
     "message": "Hello, stranger!"
 }
 ```
