@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	"bitbucket.org/kibernick/parrot/parrot"
+	"github.org/kibernick/parrot/parrot"
 )
 
 // errToMap is a cheap way to turn an error into a JSONable object.
