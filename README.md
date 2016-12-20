@@ -1,3 +1,4 @@
+[![Build Status](https://drone.io/github.com/kibernick/parrot/status.png)](https://drone.io/github.com/kibernick/parrot/latest)
 # parrot
 
 A simple API that accepts SMS messages submitted via a POST request. Uses the MessageBird API to sent proper SMS messages. It _parrots_ the Concatenated SMS functionality by splitting long messages (>160 characters) into parts and setting the correct message headers.
